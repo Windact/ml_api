@@ -1,0 +1,9 @@
+# api
+flask>=1.1.2,<1.2.0
+
+# schemas  and data validation
+marshmallow>=3.11.1,<3.12.0
+
+
+# local path for the the classification_model package for its installation
+-e "C:\Users\geoff\Desktop\udemy\badpipes\badpipes\packages\classification_model"
