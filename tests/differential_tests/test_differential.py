@@ -9,7 +9,7 @@ from classification_model.processing import utils
 from api import config
 
 # We are marking this function so that we can set up different run time for it tests
-@pytest.mark.skip
+#@pytest.mark.skip
 @pytest.mark.differential
 def test_model_make_prediction_differential(save_file="test_data_predictions.csv"):
     """ Compare the predictions of the previous model version to the new one 
