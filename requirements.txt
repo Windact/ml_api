@@ -8,4 +8,5 @@ marshmallow>=3.11.1,<3.12.0
 # local path for the the classification_model package for its installation
 # -e "C:\Users\geoff\Desktop\udemy\badpipes\badpipes\packages\classification_model"
 # Now we are going to install the classification_model package from our repo on gemfury
-classification-model==0.1.0
+# download the current version
+classification-model==0.2.0

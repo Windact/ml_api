@@ -1,0 +1,11 @@
+# The env variable for the downloading of the model package from gemfury
+--extra-index-url=${PIP_EXTRA_INDEX_URL}
+
+# api
+flask>=1.1.2,<1.2.0
+
+# schemas  and data validation
+marshmallow>=3.11.1,<3.12.0
+
+# Download the previous model
+classification-model==0.1.0
