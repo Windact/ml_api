@@ -55,7 +55,7 @@ def fitler_errors_from_input_data(data_to_valid,errors):
 
 
 
-def validate_data(input_json):
+def validate_data(input_data):
     """ Validate the schema of the input data 
     
     Parameters
@@ -73,7 +73,7 @@ def validate_data(input_json):
 
     # Instantiate the schema
     input_data_schema = WaterPumpsSchema(many= True,unknown="EXCLUDE")
-    input_data = json.loads(input_json)
+    #input_data = json.loads(input_json)
 
     errors = []
     
