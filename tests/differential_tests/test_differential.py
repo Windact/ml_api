@@ -1,6 +1,5 @@
 import pandas as pd
 import pytest
-import math
 
 from classification_model import config as model_config
 from classification_model import predict
