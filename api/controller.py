@@ -36,10 +36,14 @@ def predict():
         # get_json output is a str and json.loads outputs us a list(dict) that can be transformed
         # into a dataframe and that is what the predict.make_prediction function is expecting as an input.
         json_data = request.get_json()
-        _logger.info(f"Inputs  : {json_data}")
+        # print("********************************************")
+        #print(json_data)
+        # print("DATATYPE */*/*/*/*/*/")
+        # print(f"TYPE : {type(json_data)}")
+        #_logger.info(f"Inputs  : {json_data}")
 
         # Check if the data is valid
-        input_data,errors = validation.validate_data(input_json=json_data)
+        input_data,errors = validation.validate_data(json_data)
 
         # Making the predictions
         result = make_prediction(input_data=input_data)

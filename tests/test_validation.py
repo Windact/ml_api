@@ -1,4 +1,5 @@
 import json
+import pandas as pd 
 
 from classification_model.processing import utils
 from classification_model import config
@@ -9,9 +10,9 @@ def test_validate_data():
     # Changing amount_tsh value to string when it suppose to be a float
     test_data.iloc[-1,test_data.columns.get_loc("amount_tsh")] = "This is not a float."
     post_json = test_data.to_json(orient='records')
-
+    post_data = json.loads(post_json)
     # When
-    subject_data,subject_errors = validation.validate_data(post_json)
+    subject_data,subject_errors = validation.validate_data(post_data)
 
     # Then
     assert len(subject_errors) == 1
@@ -24,9 +25,12 @@ def test_validate_data():
 def test_prediction_endpoint_validation_200(flask_test_client):
     test_data = utils.load_dataset(filename=config.TESTING_DATA_FILE)
     post_json = test_data.to_json(orient='records') 
+    post_data = json.loads(post_json)
+    # print("DATAFRAME /////////*************************************************")
+    # print(pd.DataFrame(post_data).info())
 
     # When
-    response = flask_test_client.post("/v1/predict/classification",json=post_json)
+    response = flask_test_client.post("/v1/predict/classification",json=post_data)
 
     # Then
     assert response.status_code == 200
