@@ -49,8 +49,10 @@ def test_prediction_endpoint_returns_prediction(flask_test_client):
 
     test_data = utils.load_dataset(filename=config.TESTING_DATA_FILE)
     post_json = test_data.to_json(orient='records') 
+    post_data = json.loads(post_json)
+
     # When
-    response = flask_test_client.post("/v1/predict/classification",json=post_json)
+    response = flask_test_client.post("/v1/predict/classification",json=post_data)
 
     # Then
     assert response.status_code == 200

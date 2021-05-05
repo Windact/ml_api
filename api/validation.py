@@ -73,7 +73,6 @@ def validate_data(input_data):
 
     # Instantiate the schema
     input_data_schema = WaterPumpsSchema(many= True,unknown="EXCLUDE")
-    #input_data = json.loads(input_json)
 
     errors = []
     
