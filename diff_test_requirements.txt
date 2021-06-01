@@ -8,4 +8,4 @@ flask>=1.1.2,<1.2.0
 marshmallow>=3.11.1,<3.12.0
 
 # Download the previous model
-classification-model==0.1.0
+classification-model==0.2.0
