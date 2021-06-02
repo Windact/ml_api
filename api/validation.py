@@ -1,8 +1,6 @@
 from marshmallow import Schema, fields
 from marshmallow import ValidationError
-import json
 
-from classification_model import config
 from api.config import get_logger
 
 _logger = get_logger(logger_name=__name__)

@@ -1,7 +1,6 @@
-import pandas as pd
 import json
 
-from classification_model import config
+from classification_model.config.core import config
 from classification_model import __version__ as _version
 from classification_model.processing import utils
 from api import __version__ as api_version
@@ -47,7 +46,7 @@ def test_prediction_endpoint_returns_prediction(flask_test_client):
     flask_test_client : app test_client object
     """
 
-    test_data = utils.load_dataset(filename=config.TESTING_DATA_FILE)
+    test_data = utils.load_dataset(filename=config.app_config.TESTING_DATA_FILE)
     post_json = test_data.to_json(orient='records') 
     post_data = json.loads(post_json)
 
