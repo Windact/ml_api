@@ -1,6 +1,6 @@
 import pandas as pd
 
-from classification_model import config as model_config
+from classification_model.config.core import config as model_config
 from classification_model import predict 
 from classification_model.processing import utils            
 
@@ -10,7 +10,7 @@ def capture_predictions():
     """ Save a slice of the predictions from the test data """
 
     save_file = "test_data_predictions.csv"
-    test_data = utils.load_dataset(filename= model_config.TESTING_DATA_FILE)
+    test_data = utils.load_dataset(filename= model_config.app_config.TESTING_DATA_FILE)
 
     # Taking a slice of the test dataset
     multiple_test_input = test_data.iloc[100:700,:]

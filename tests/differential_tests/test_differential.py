@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from classification_model import config as model_config
+from classification_model.config.core import config as model_config
 from classification_model import predict
 from classification_model.processing import utils
 
@@ -42,4 +42,4 @@ def test_model_make_prediction_differential(save_file="test_data_predictions.csv
     previous_equal_current = [previous_value == current_value for previous_value, current_value in zip(previous_model_predictions,current_model_predictions)]
     difference_rate = 1 - (sum(previous_equal_current)/len(previous_equal_current))
     # 
-    assert difference_rate < model_config.ACCEPTABLE_MODEL_DIFFERENCE
+    assert difference_rate < model_config.model_config.ACCEPTABLE_MODEL_DIFFERENCE
