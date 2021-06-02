@@ -25,7 +25,7 @@ def test_model_make_prediction_differential(save_file="test_data_predictions.csv
     previous_model_predictions = previous_model_df["predictions"].values
 
     # Get the new predictions with the new model
-    test_data = utils.load_dataset(filename= model_config.TESTING_DATA_FILE)
+    test_data = utils.load_dataset(filename= model_config.app_config.TESTING_DATA_FILE)
     # Taking the same slice as the capture_predictions function
     multiple_test_input = test_data.iloc[100:700,:]
 
