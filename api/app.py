@@ -1,4 +1,5 @@
 from flask import Flask
+import connexion
 
 from api.config import get_logger
 
@@ -6,15 +7,16 @@ _logger = get_logger(logger_name=__name__)
 
 def create_app(*, config_object):
     """ Create a flask app instance """
+    connexion_app = connexion.App(
+        __name__, debug=config_object.DEBUG, specification_dir="spec/"
+    )
 
-    flask_app = Flask("ml_api")
-    # Adding the config to the flask app instance
+    flask_app = connexion_app.app
     flask_app.config.from_object(config_object)
+    connexion_app.add_api("api.yml")
 
-    # import blueprints
-    from api.controller import prediction_app
-    flask_app.register_blueprint(prediction_app)
     # logging
     _logger.debug("Application instance created")
 
-    return flask_app
+    return connexion_app
+

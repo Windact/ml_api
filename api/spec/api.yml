@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: ml_api
+  description:
+    This api takes in data about waterpumps and give as an ouput a json file
+    allowing the user to know if the pumps are faulty or not.
+  version: 0.2.0
+
+servers:
+  - url: https://{base}:{port}
+    description: API for performing waterpumps status predictions
+    variables:
+      base:
+        default: "0.0.0.0"
+      port:
+        default: "5000"
+paths:
+  # Root
+  /:
+    get:
+      operationId: api.controller.pumps
+      responses:
+        '200':
+          description: API Status is OK
+  
+  /version:
+    get:
+      operationId: api.controller.version
+      responses:
+        '200':
+          description: Version Status is OK
+  
+  /v1/predictions:
+    post:
+      operationId: api.controller.predict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: array
+              items:
+                $ref: '#/components/schemas/WaterPumpsDetails'
+
+      responses:
+        '200':
+          description: Waterpumps predicitons ok
+        '400':
+          description: Bad request, chekc the input data
+        '5XX':
+          description: Unexpected error
+ 
+components:
+  schemas:
+    WaterPumpsDetails:
+      type: object
+      description: "Data schema exemple"
+      example:
+        id: 19071
+        amount_tsh: 0.0
+        date_recorded: 2011-07-09
+        funder: Mavuno Ngo
+        gps_height: 0
+        installer: Artisan
+        longitude: 31.05763056
+        latitude: -1.5710402
+        wpt_name: Mavuno Ngo 2
+        num_private: 0
+        basin: Lake Victoria
+        subvillage: Kaburala A
+        region: Kagera
+        region_code: 18
+        district_code: 1
+        lga: Karagwe
+        ward: Ihanda
+        population: 0
+        public_meeting: True
+        recorded_by: GeoData Consultants Ltd
+        scheme_management: null
+        scheme_name: null
+        permit: True
+        construction_year: 0
+        extraction_type: gravity
+        extraction_type_group: gravity
+        extraction_type_class: gravity
+        management: private operator
+        management_group: commercial
+        payment: never pay
+        payment_type: never pay
+        water_quality: soft
+        quality_group: good
+        quantity: seasonal
+        quantity_group: seasonal
+        source: rainwater harvesting
+        source_type: rainwater harvesting
+        source_class: surface
+        waterpoint_type: other
+        waterpoint_type_group: other

@@ -1,5 +1,4 @@
-import json
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify, Response
 
 from classification_model.predict import make_prediction
 from classification_model import __version__ as _version
@@ -10,26 +9,18 @@ from api import validation
 
 _logger = get_logger(logger_name=__name__)
 
-prediction_app = Blueprint("prediction_app",__name__)
-
-@prediction_app.route("/pumps", methods=["GET"])
 def pumps():
     """ Just for quick testing purpose. Will be remove quickly """
     if request.method == "GET":
         _logger.info("pumps status is OK")
-        return "Ok my dudes!"
+        return jsonify({"Status":"Ok"})
 
 
-@prediction_app.route("/version", methods=["GET"])
 def version():
     if request.method == "GET":
         return jsonify({"model_verison" : _version,"api_version" : api_version})
 
 
-
-
-
-@prediction_app.route("/v1/predict/classification", methods=["POST"])
 def predict():
     if request.method == "POST":
         # Extract data from the json

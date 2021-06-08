@@ -2,7 +2,8 @@
 --extra-index-url=${PIP_EXTRA_INDEX_URL}
 # api
 flask>=1.1.2,<1.2.0
-
+# For OpenAPI spec dev
+connexion[swagger-ui]>=2.7.0,<2.8.0
 # schemas  and data validation
 marshmallow>=3.11.1,<3.12.0
 
@@ -14,4 +15,9 @@ gunicorn>= 20.1.0,<20.2.0
 # Now we are going to install the classification_model package from our repo on gemfury
 # download the current version
 classification-model==0.3.2
+
+# enforce code format
+black>=21.5b2,<22.0
+# report non respect of PEP8
+flake8>=3.9.2,<3.10.0
 
