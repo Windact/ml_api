@@ -14,7 +14,7 @@ def app():
         A flask application object in test mode is yielded
     """
 
-    app = create_app(config_object=TestingConfig)
+    app = create_app(config_object=TestingConfig).app
 
     with app.app_context():
         yield app
