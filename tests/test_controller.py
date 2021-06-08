@@ -32,7 +32,7 @@ def test_pumps_endpoint_return_status(flask_test_client):
     """
 
     #When
-    response = flask_test_client.get("/pumps")
+    response = flask_test_client.get("/")
 
     # Then
     assert response.status_code == 200
@@ -51,7 +51,7 @@ def test_prediction_endpoint_returns_prediction(flask_test_client):
     post_data = json.loads(post_json)
 
     # When
-    response = flask_test_client.post("/v1/predict/classification",json=post_data)
+    response = flask_test_client.post("/v1/predictions",json=post_data)
 
     # Then
     assert response.status_code == 200
