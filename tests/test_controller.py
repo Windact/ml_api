@@ -1,10 +1,12 @@
 import json
+import pytest 
 
 from classification_model.config.core import config
 from classification_model import __version__ as _version
 from classification_model.processing import utils
 from api import __version__ as api_version
 
+@pytest.mark.integration
 def test_version_endpoint(flask_test_client):
     """ Test version endpoint 
 
@@ -23,6 +25,7 @@ def test_version_endpoint(flask_test_client):
     assert response_json.get("api_version") == api_version
 
 
+@pytest.mark.integration
 def test_pumps_endpoint_return_status(flask_test_client):
     """ Testing pumps route status return 
     
@@ -37,7 +40,7 @@ def test_pumps_endpoint_return_status(flask_test_client):
     # Then
     assert response.status_code == 200
 
-
+@pytest.mark.integration
 def test_prediction_endpoint_returns_prediction(flask_test_client):
     """ TEST if the predict.make_prediction output have the expected ouputs and formats 
     

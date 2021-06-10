@@ -6,6 +6,9 @@ flask>=1.1.2,<1.2.0
 # For OpenAPI spec dev
 connexion[swagger-ui]>=2.7.0,<2.8.0
 
+# For test 
+pytest>=6.1.1,<6.2.0
+
 # schemas  and data validation
 marshmallow>=3.11.1,<3.12.0
 
