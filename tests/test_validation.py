@@ -6,7 +6,7 @@ from classification_model.config.core import config
 from api import validation
 
 
-@pytest.mark.parametrize("var_name,var_index,var_value",[("amount_tsh",-1,"This is not a float."),("construction_year",-5,12.54),("public_meeting",-3,45)])
+@pytest.mark.parametrize("var_name,var_index,var_value",[("amount_tsh",-1,"This is not a float."),("construction_year",-5,"Not int"),("public_meeting",-3,45)])
 def test_validate_data(var_name,var_index,var_value):
     test_data = utils.load_dataset(filename=config.app_config.TESTING_DATA_FILE)
     # Changing amount_tsh value to string when it suppose to be a float
@@ -18,7 +18,7 @@ def test_validate_data(var_name,var_index,var_value):
 
     # Then
     assert len(subject_errors) == 1
-    input_idx =  test_data.shape[0]-1
+    input_idx =  test_data.shape[0]+var_index
     assert list(subject_errors.keys())[0] == input_idx
     assert list(subject_errors[input_idx].keys())[0] == var_name
 
