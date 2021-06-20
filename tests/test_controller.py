@@ -54,7 +54,7 @@ def test_prediction_endpoint_returns_prediction(flask_test_client):
     post_data = json.loads(post_json)
 
     # When
-    response = flask_test_client.post("/v1/predictions",json=post_data)
+    response = flask_test_client.post("/v1/predictions/gbm",json=post_data)
 
     # Then
     assert response.status_code == 200
