@@ -1,53 +1,10 @@
-import pandas as pd
 import json
 import pytest
 
 from classification_model.config.core import config as model_config
-from classification_model import predict
 from classification_model.processing import utils
 
 from api import config
-
-# We are marking this function so that we can set up different run time for it tests
-#@pytest.mark.skip
-# @pytest.mark.differential
-# def test_model_make_prediction_differential(save_file="test_data_predictions.csv"):
-#     """ Compare the predictions of the previous model version to the new one 
-    
-#     Parameters
-#     ----------
-#     save_file : str, default="test_data_predictions.csv"
-#         The name of the file where a slice of the predictions has been saved.
-#     """
-
-#     # Given
-#     # Load the previous predictions
-#     previous_model_df = pd.read_csv(f"{config.PACKAGE_ROOT}/{save_file}")
-#     previous_model_predictions = previous_model_df["predictions"].values
-
-#     # Get the new predictions with the new model
-#     test_data = utils.load_dataset(filename= model_config.app_config.TESTING_DATA_FILE)
-#     # Taking the same slice as the capture_predictions function
-#     multiple_test_input = test_data.iloc[100:700,:]
-
-#     current_results = predict.make_prediction(input_data=multiple_test_input)
-#     current_model_predictions = current_results.get("predictions")
-
-#     # Then
-#     # Current model vs Previous model
-
-#     # The length
-#     assert len(previous_model_predictions) == len(current_model_predictions)
-
-#     # the differential test
-#     previous_equal_current = [previous_value == current_value for previous_value, current_value in zip(previous_model_predictions,current_model_predictions)]
-#     difference_rate = 1 - (sum(previous_equal_current)/len(previous_equal_current))
-#     # 
-#     assert difference_rate < model_config.model_config.ACCEPTABLE_MODEL_DIFFERENCE
-
-
-    
-
 
 @pytest.mark.differential
 def test_model_make_prediction_differential(flask_test_client):
@@ -70,13 +27,12 @@ def test_model_make_prediction_differential(flask_test_client):
     new_response_json = json.loads(new_response.data)
     new_predictions = new_response_json.get("predictions")
 
-
-
     # The length
     assert len(prev_predictions) == len(new_predictions)
 
     # the differential test
-    previous_equal_new = [previous_value == new_value for previous_value, new_value in zip(prev_predictions,new_predictions)]
+    previous_equal_new = [previous_value[0] == new_value for previous_value, new_value in zip(prev_predictions,new_predictions)] # Selecting the first value of previous_value because the elements of prev_predictions list are list themself of one element.
     difference_rate = 1 - (sum(previous_equal_new)/len(previous_equal_new))
     # Checking for acceptance threshold
-    assert difference_rate < model_config.model_config.ACCEPTABLE_MODEL_DIFFERENCE
+    print(difference_rate)
+    assert difference_rate < config.ACCEPTABLE_MODEL_DIFFERENCE

@@ -5,6 +5,7 @@ import os
 import sys
 
 PACKAGE_ROOT = pathlib.Path(__file__).resolve().parent.parent
+ACCEPTABLE_MODEL_DIFFERENCE = 0.2
 
 FORMATTER = logging.Formatter(
     "%(asctime)s — %(name)s — %(levelname)s —"
