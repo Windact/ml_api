@@ -30,7 +30,7 @@ paths:
         '200':
           description: Version Status is OK
   
-  /v1/predictions:
+  /v1/predictions/gbm:
     post:
       operationId: api.controller.predict
       requestBody:
@@ -50,6 +50,28 @@ paths:
         '5XX':
           description: Unexpected error
  
+  /v1/predictions/dl:
+    post:
+      operationId: api.controller.prev_predict
+      requestBody:
+        description: endpoint for previous model (dl_classification_model package). Use for back to back testing
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: array
+              items:
+                $ref: '#/components/schemas/WaterPumpsDetails'
+
+      responses:
+        '200':
+          description: Waterpumps predicitons ok
+        '400':
+          description: Bad request, chekc the input data
+        '5XX':
+          description: Unexpected error
+
+
 components:
   schemas:
     WaterPumpsDetails:
