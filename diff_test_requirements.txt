@@ -12,5 +12,7 @@ pytest>=6.1.1,<6.2.0
 # schemas  and data validation
 marshmallow>=3.11.1,<3.12.0
 
-# Download the previous model
-classification-model==0.3.1
+# download the current version
+classification-model==0.3.2
+# Previous model
+dl_classification_model==0.1.0

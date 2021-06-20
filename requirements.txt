@@ -9,7 +9,8 @@ marshmallow>=3.11.1,<3.12.0
 
 # For test 
 pytest>=6.1.1,<6.2.0
-
+# For diff test
+dl_classification_model==0.1.0
 # For deployement on heroku
 gunicorn>= 20.1.0,<20.2.0
 
