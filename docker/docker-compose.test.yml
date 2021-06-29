@@ -1,32 +1,30 @@
 version: '3'
 services:
-  ml_api:
+  ml_api_test:
     build:
       context: ../
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/Dockerfile.test
     environment:
-      DB_HOST: database
+      DB_HOST: database_test
       DB_PORT: 5432
-      DB_USER: user
+      DB_USER: user_test
       DB_PASSWORD: ${DB_PASSWORD:-password}
-      DB_NAME: ml_api
+      DB_NAME: ml_api_test
     depends_on:
-      - database
+      - database_test
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
     # Commands to run when running the ml_api service. The order is important
     command: bash -c "make db-migrations && make run-service-development"
-
-  database:
+  database_test:
     image: postgres:latest
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: user_test
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ml_api
+      POSTGRES_DB: ml_api_test
     ports:
-      - "6609:5432"
+      - "6608:5432"
     volumes:
-      - my_dbdata:/var/lib/postgresql/data
-
+      - my_dbdata_test:/var/lib/postgresql/data
 volumes:
-  my_dbdata:
+  my_dbdata_test:

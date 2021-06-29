@@ -1,12 +1,19 @@
-from flask import request, jsonify, Response
+from flask import request, jsonify, Response,current_app
+# Threading is better here than multiprocessing because start another process will make the user
+# wait too much.
+# Nevertheless, the way we implement it is not scalable. We will change it latter.
+import threading
 
 from classification_model.predict import make_prediction
 from classification_model import __version__ as _version
 from dl_classification_model.predict import make_prediction as dl_make_prediction
 
+from flask import current_app
+
 from api.config import get_logger
 from api import __version__ as api_version
 from api import validation
+from api.persistence.data_access import PredictionPersistence, ModelType
 
 _logger = get_logger(logger_name=__name__)
 
@@ -39,7 +46,35 @@ def predict():
         _logger.info(f"Outputs : {result}")
 
         predictions = result.get("predictions").tolist()
+
         version = result.get("version")
+
+        # Persisting the predictions
+        persistence = PredictionPersistence(db_session=current_app.db_session)
+
+        persistence.save_predictions(
+            inputs=json_data,
+            model_version=version,
+            predictions=predictions,
+            db_model=ModelType.GRADIENT_BOOSTING,
+        )
+
+        # Asynchronous shadow mode
+        if current_app.config.get("SHADOW_MODE_ACTIVE"):
+            _logger.debug(
+                f"Calling shadow model asynchronously: "
+                f"{ModelType.NEURALNET.value}"
+            )
+            thread = threading.Thread(
+                target=persistence.make_save_predictions,
+                kwargs={
+                    "db_model": ModelType.NEURALNET,
+                    "input_data": input_data,
+                    "app": current_app._get_current_object(),
+                    "json_data": json_data
+                },
+            )
+            thread.start()
 
         return jsonify({"predictions": predictions,
                         "errors" : errors,
@@ -66,6 +101,35 @@ def prev_predict():
         predictions = result.get("predictions").tolist()
         version = result.get("version")
 
+        # Save predictions
+        persistence = PredictionPersistence(db_session=current_app.db_session)
+
+        persistence.save_predictions(
+            inputs=json_data,
+            model_version=version,
+            predictions=predictions,
+            db_model=ModelType.NEURALNET,
+        )
+
+        # Asynchronous shadow mode
+        if current_app.config.get("SHADOW_MODE_ACTIVE"):
+            _logger.debug(
+                f"Calling shadow model asynchronously: "
+                f"{ModelType.GRADIENT_BOOSTING.value}"
+            )
+            thread = threading.Thread(
+                target=persistence.make_save_predictions,
+                kwargs={
+                    "db_model": ModelType.GRADIENT_BOOSTING,
+                    "input_data": input_data,
+                    "app": current_app._get_current_object(),
+                    "json_data": json_data
+                },
+            )
+            thread.start()
+
         return jsonify({"predictions": predictions,
                         "errors" : errors,
                         "version": version})
+
+

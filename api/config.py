@@ -28,7 +28,16 @@ class Config:
     SERVER_ADDRESS= os.environ.get('SERVER_ADDRESS', '0.0.0.0')
     SERVER_PORT= os.environ.get('SERVER_PORT', '5000')
     LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
-
+    SHADOW_MODE_ACTIVE = os.getenv('SHADOW_MODE_ACTIVE', True)
+    DB_USER = os.getenv("DB_USER", "user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+    DB_PORT = os.getenv("DB_PORT", 6609)
+    DB_HOST = os.getenv("DB_HOST", "database")
+    DB_NAME = os.getenv("DB_NAME", "ml_api")
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg2://{DB_USER}:"
+        f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 class ProductionConfig(Config):
     DEBUG = False
     SERVER_ADDRESS= os.environ.get('SERVER_ADDRESS', '0.0.0.0')
@@ -41,7 +50,16 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    LOGGING_LEVEL = logging.DEBUG
+    LOGGING_LEVEL = logging.WARNING
+    DB_USER = os.getenv("DB_USER", "user_test")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+    DB_PORT = os.getenv("DB_PORT", 6608)
+    DB_HOST = os.getenv("DB_HOST", "database_test")
+    DB_NAME = os.getenv("DB_NAME", "ml_api_test")
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg2://{DB_USER}:"
+        f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 
 def get_console_handler():
     console_handler = logging.StreamHandler(sys.stdout)

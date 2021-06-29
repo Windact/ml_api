@@ -7,8 +7,14 @@ connexion[swagger-ui]>=2.7.0,<2.8.0
 # schemas  and data validation
 marshmallow>=3.11.1,<3.12.0
 
-# For test 
-pytest>=6.1.1,<6.2.0
+# Database for persistance (shadow model)
+SQLAlchemy>=1.4.19,<1.5.0
+# Database utils functions for sqlalchemy
+sqlalchemy_utils>=0.37.7,<0.38.7
+# SQLAlchemy driver
+psycopg2>=2.9.1,<3.0.0
+# Database migrations
+alembic>=1.6.5,<1.7.0
 # Previous model
 dl_classification_model==0.1.0
 # For deployement on heroku
