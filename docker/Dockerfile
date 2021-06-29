@@ -3,7 +3,7 @@ FROM python:3.8.5
 RUN mkdir -p /opt/app
 
 # Defining an non persisted env variable for our package
-ENV PIP_EXTRA_INDEX_URL=https://p9xMrr8xB42H9gXbSq9s:@pypi.fury.io/windact/
+ENV PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
 
 COPY requirements.txt /opt/app/requirements.txt
 RUN pip install --upgrade pip
