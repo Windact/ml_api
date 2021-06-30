@@ -3,7 +3,8 @@ FROM python:3.8.5
 RUN mkdir -p /opt/app
 
 # Defining an non persisted env variable for our package
-ENV PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
+ARG PIP_EXTRA_INDEX_URL_VALUE
+ENV PIP_EXTRA_INDEX_URL=$PIP_EXTRA_INDEX_URL_VALUE
 
 COPY requirements.txt /opt/app/requirements.txt
 RUN pip install --upgrade pip

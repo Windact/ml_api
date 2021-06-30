@@ -12,3 +12,4 @@ db-migrations:
 run-service-development:
 	@echo "+ $@"
 	python run.py
+
