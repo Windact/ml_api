@@ -3,9 +3,11 @@ from logging.handlers import TimedRotatingFileHandler
 import pathlib
 import os
 import sys
+from logging.config import fileConfig
 
 PACKAGE_ROOT = pathlib.Path(__file__).resolve().parent.parent
 ACCEPTABLE_MODEL_DIFFERENCE = 0.2
+APP_NAME = 'ml_api'
 
 FORMATTER = logging.Formatter(
     "%(asctime)s — %(name)s — %(levelname)s —"
@@ -91,10 +93,9 @@ def get_logger(*, logger_name):
 def setup_app_logging(config: Config) -> None:
     """Prepare custom logging for our application."""
     _disable_irrelevant_loggers()
-    root = logging.getLogger()
-    root.setLevel(config.LOGGING_LEVEL)
-    root.addHandler(get_console_handler())
-    root.propagate = False
+    fileConfig(PACKAGE_ROOT / 'gunicorn_logging.conf')
+    logger = logging.getLogger('mlapi')
+    logger.setLevel(config.LOGGING_LEVEL)
 
 
 def _disable_irrelevant_loggers() -> None:

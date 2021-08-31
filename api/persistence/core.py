@@ -10,7 +10,7 @@ from sqlalchemy_utils import database_exists, create_database
 
 from api.config import Config,PACKAGE_ROOT
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger("mlapi")
 
 # Base class for SQLAlchemy models
 Base = declarative_base()

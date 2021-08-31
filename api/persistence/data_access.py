@@ -14,7 +14,7 @@ from api.persistence.models import (
     GradientBoostingModelPredictions,
 )
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger('mlapi')
 
 
 class ModelType(enum.Enum):

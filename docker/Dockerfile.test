@@ -3,10 +3,14 @@ FROM python:3.8.5
 RUN mkdir -p /opt/app
 
 # Defining an non persisted env variable for our package
-ENV PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
+ARG PIP_EXTRA_INDEX_URL_VALUE
+ENV PIP_EXTRA_INDEX_URL=$PIP_EXTRA_INDEX_URL_VALUE
 
 COPY requirements.txt /opt/app/requirements.txt
 RUN pip install --upgrade pip
+
+# RUN echo " The FUCKING SHIT : ${PIP_EXTRA_INDEX_URL}"
+# RUN echo " FUCKED? : $PIP_EXTRA_INDEX_URL_VALUE"
 
 # ensure we can run the make commands
 RUN apt-get update -y && \

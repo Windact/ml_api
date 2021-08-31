@@ -4,12 +4,15 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.test
+    container_name: ml_api_test
     environment:
       DB_HOST: database_test
       DB_PORT: 5432
       DB_USER: user_test
       DB_PASSWORD: ${DB_PASSWORD:-password}
       DB_NAME: ml_api_test
+    networks:
+      - my_net_test
     depends_on:
       - database_test
     ports:
@@ -18,6 +21,7 @@ services:
     command: bash -c "make db-migrations && make run-service-development"
   database_test:
     image: postgres:latest
+    container_name: database_test
     environment:
       POSTGRES_USER: user_test
       POSTGRES_PASSWORD: password
@@ -26,5 +30,12 @@ services:
       - "6608:5432"
     volumes:
       - my_dbdata_test:/var/lib/postgresql/data
+    networks:
+      - my_net_test
+
+networks:
+  my_net_test:
+    driver: bridge
+
 volumes:
-  my_dbdata_test:
+  my_dbdata_test: {}
