@@ -1,3 +1,4 @@
+import logging
 from flask import request, jsonify, Response,current_app
 # Threading is better here than multiprocessing because start another process will make the user
 # wait too much.
@@ -7,15 +8,57 @@ import threading
 from classification_model.predict import make_prediction
 from classification_model import __version__ as _version
 from dl_classification_model.predict import make_prediction as dl_make_prediction
+from dl_classification_model import __version__ as shadow_version
 
 from flask import current_app
+
+from prometheus_client import Counter, Info
 
 from api.config import get_logger
 from api import __version__ as api_version
 from api import validation
 from api.persistence.data_access import PredictionPersistence, ModelType
+from api.config import APP_NAME
 
-_logger = get_logger(logger_name=__name__)
+
+#from api.monitoring.middleware import PREDICTION_Counter_FAULTY_WATER_PUMPS,PREDICTION_Counter_HEALTHY_WATER_PUMPS
+_logger = logging.getLogger('mlapi')
+
+# GRADIENT_BOOSTING should be the shadow model as it the new and improve one but whatever
+
+PREDICTION_Counter_FAULTY_WATER_PUMPS = Counter(
+    name='faulty_waterpumps_counter',
+    documentation='Faulty waterpumps counter',
+    labelnames=['app_name', 'model_name', 'model_version']
+)
+
+PREDICTION_Counter_HEALTHY_WATER_PUMPS = Counter(
+    name='healthy_waterpumps_counter',
+    documentation='Healthy waterpumps counter',
+    labelnames=['app_name', 'model_name', 'model_version']
+)
+
+# PREDICTION_Counter_FAULTY_WATER_PUMPS.labels(
+#                 app_name=APP_NAME,
+#                 model_name=ModelType.GRADIENT_BOOSTING.name,
+#                 model_version=_version)
+
+# PREDICTION_Counter_HEALTHY_WATER_PUMPS.labels(
+#                 app_name=APP_NAME,
+#                 model_name=ModelType.GRADIENT_BOOSTING.name,
+#                 model_version=_version)
+
+MODEL_VERSIONS = Info(
+    'model_version_details',
+    'Capture model version information',
+)
+
+# That information will be tracked now. i do not need to add it to and endpoint.
+MODEL_VERSIONS.info({
+    'live_model': ModelType.GRADIENT_BOOSTING.name,
+    'live_version': _version,
+    'shadow_model': ModelType.NEURALNET.name,
+    'shadow_version': shadow_version})
 
 def pumps():
     """ Just for quick testing purpose. Will be remove quickly """
@@ -26,6 +69,7 @@ def pumps():
 
 def version():
     if request.method == "GET":
+        _logger.debug(f"model_verison {_version}, api_version : {api_version}")
         return jsonify({"model_verison" : _version,"api_version" : api_version})
 
 
@@ -36,7 +80,10 @@ def predict():
         # into a dataframe and that is what the predict.make_prediction function is expecting as an input.
         # NOT REALLY ANYMORE
         json_data = request.get_json()
-        _logger.info(f"Inputs  : {json_data}")
+        _logger.info(f"Inputs  : {json_data}"
+                    f"model : {ModelType.GRADIENT_BOOSTING.name}"
+                    f"model_version : {_version}"
+                    )
 
         # Check if the data is valid
         input_data,errors = validation.validate_data(json_data)
@@ -76,6 +123,19 @@ def predict():
             )
             thread.start()
 
+        # Monitoring
+        for pred in predictions:
+            if pred == "functional":
+                PREDICTION_Counter_HEALTHY_WATER_PUMPS.labels(
+                app_name=APP_NAME,
+                model_name=ModelType.GRADIENT_BOOSTING.name,
+                model_version=_version).inc()
+            elif pred == "non functional or functional needs repair":
+                PREDICTION_Counter_FAULTY_WATER_PUMPS.labels(
+                app_name=APP_NAME,
+                model_name=ModelType.GRADIENT_BOOSTING.name,
+                model_version=_version).inc()
+
         return jsonify({"predictions": predictions,
                         "errors" : errors,
                         "version": version})
@@ -89,7 +149,10 @@ def prev_predict():
         # into a dataframe and that is what the predict.make_prediction function is expecting as an input.
         # NOT REALLY ANYMORE
         json_data = request.get_json()
-        _logger.info(f"Inputs  : {json_data}")
+        _logger.info(f"Inputs  : {json_data}"
+                    f"model : {ModelType.NEURALNET.name}"
+                    f"model_version : {shadow_version}"
+                    )
 
         # Check if the data is valid
         input_data,errors = validation.validate_data(json_data)

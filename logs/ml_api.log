@@ -1,0 +1,12 @@
+2021-08-30 11:18:00,796 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5939: {'amount_tsh': ['Not a valid number.']}}
+2021-08-30 11:18:01,690 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5935: {'construction_year': ['Not a valid integer.']}}
+2021-08-30 11:18:02,602 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5937: {'public_meeting': ['Not a valid boolean.']}}
+2021-08-30 11:28:05,163 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5939: {'amount_tsh': ['Not a valid number.']}}
+2021-08-30 11:28:06,028 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5935: {'construction_year': ['Not a valid integer.']}}
+2021-08-30 11:28:06,895 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5937: {'public_meeting': ['Not a valid boolean.']}}
+2021-08-30 11:32:17,826 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5939: {'amount_tsh': ['Not a valid number.']}}
+2021-08-30 11:32:18,704 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5935: {'construction_year': ['Not a valid integer.']}}
+2021-08-30 11:32:19,572 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5937: {'public_meeting': ['Not a valid boolean.']}}
+2021-08-30 11:53:39,339 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5939: {'amount_tsh': ['Not a valid number.']}}
+2021-08-30 11:53:40,227 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5935: {'construction_year': ['Not a valid integer.']}}
+2021-08-30 11:53:41,124 — api.validation — ERROR —validate_data:85 — Errors in json_data : {5937: {'public_meeting': ['Not a valid boolean.']}}
